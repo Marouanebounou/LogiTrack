@@ -46,8 +46,9 @@ public class CommandService {
         return commandRepositorie.findById(id);
     }
 
-    public void updateCommandeStatus(Commande commande , StatutCommande statutCommande)
+    public void updateCommandeStatus(int id , StatutCommande statutCommande)
     {
+        Commande commande = commandRepositorie.findById(id).orElseThrow(IllegalArgumentException::new);
         commande.setStatutCommande(statutCommande);
         commandRepositorie.save(commande);
     }
