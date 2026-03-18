@@ -16,9 +16,9 @@ public class ClientService {
         this.clientRepositorie = clientRepositorie;
     }
 
-    public void addClient(Client client)
+    public Client addClient(Client client)
     {
-        clientRepositorie.save(client);
+       return clientRepositorie.save(client);
     }
     
     public List<Client> getAllClients(){
@@ -30,8 +30,9 @@ public class ClientService {
         return clientRepositorie.findById(id);
     }
 
-    public void deleteClient(Client client)
+    public void deleteClient(int id)
     {
-        clientRepositorie.delete(client);
+        Client client1 = clientRepositorie.findById(id).orElseThrow(IllegalArgumentException::new);
+        clientRepositorie.delete(client1);
     }
 }

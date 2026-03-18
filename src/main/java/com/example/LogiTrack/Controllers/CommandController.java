@@ -21,6 +21,12 @@ public class CommandController {
         this.ligneCommandeService = ligneCommandeService;
     }
 
+    @PostMapping("/new")
+    public Commande createCommande(@RequestBody Commande commande)
+    {
+        return commandService.addCommand(commande);
+    }
+
     @GetMapping("/all")
     public List<Commande> getAllCommands()
     {
@@ -28,7 +34,7 @@ public class CommandController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Commande> getCommandById(@PathVariable int id)
+    public Commande getCommandById(@PathVariable int id)
     {
         return commandService.findCommande(id);
     }

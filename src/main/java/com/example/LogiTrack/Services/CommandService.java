@@ -26,9 +26,9 @@ public class CommandService {
         this.ligneCommandeRepositorie = ligneCommandeRepositorie;
     }
 
-    public void addCommand(Commande commande)
+    public Commande addCommand(Commande commande)
     {
-        commandRepositorie.save(commande);
+        return commandRepositorie.save(commande);
     }
 
     public List<Commande> getAllCommandes()
@@ -41,9 +41,9 @@ public class CommandService {
         return commandRepositorie.findAllByClientId(id);
     }
 
-    public Optional<Commande> findCommande(int id)
+    public Commande findCommande(int id)
     {
-        return commandRepositorie.findById(id);
+        return commandRepositorie.findById(id).orElseThrow(()-> new RuntimeException("Command not found"));
     }
 
     public void updateCommandeStatus(int id , StatutCommande statutCommande)
@@ -54,13 +54,20 @@ public class CommandService {
     }
 
     @Transactional
-    public void addLigneCommande(LigneCommande ligneCommande, Commande commande)
+    public void addProductToCommand(int productId , int CommandeId , int quantity)
     {
-        Product product = ligneCommande.getProduct();
-        product.setQuantity(product.getQuantity() - ligneCommande.getQuantity());
-        productRepositorie.save(product);
+        Commande commande = commandRepositorie.findById(CommandeId).orElseThrow(() -> new RuntimeException("Command not found"));
+        Product product = productRepositorie.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (product.getQuantity() < quantity){
+            throw new RuntimeException("Not enough stock");
+        }
+
+        product.setQuantity(product.getQuantity() - quantity);
+        LigneCommande ligneCommande = new LigneCommande(quantity , commande , product);
         commande.addLigneCommande(ligneCommande);
         commandRepositorie.save(commande);
+
     }
 
     @Transactional
