@@ -3,6 +3,8 @@ package com.example.LogiTrack.Controllers;
 import com.example.LogiTrack.Models.Commande;
 import com.example.LogiTrack.Services.CommandService;
 import com.example.LogiTrack.Services.LigneCommandeService;
+import com.example.LogiTrack.dto.CommandeRequest;
+import com.example.LogiTrack.dto.CommandeResponse;
 import com.example.LogiTrack.enums.StatutCommande;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,9 @@ public class CommandController {
     }
 
     @PostMapping("/new")
-    public Commande createCommande(@RequestBody Commande commande)
+    public CommandeResponse createCommande(@RequestBody CommandeRequest commande)
     {
-        return commandService.addCommand(commande);
+        return commandService.createCommoande(commande);
     }
 
     @GetMapping("/all")
